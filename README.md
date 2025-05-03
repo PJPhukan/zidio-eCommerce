@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 # MERN Stack E-Commerce Application  
 **Starry Night & Comic Superheroes Theme**
