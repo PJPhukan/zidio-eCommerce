@@ -1,10 +1,13 @@
 // src/App.jsx
+
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/navbar/Navbar";
 import HeroSection from "./components/hero/HeroSection";
 import CategoryLinks from "./components/hero/CategoryLinks";
 import FeaturedProducts from "./components/hero/FeaturedProducts";
+
 import Sidebar from "./components/admin/Sidebar";
 import { RiMenuFold2Fill } from "react-icons/ri";
 import AdminTopbar from "./components/admin/Topbar";
@@ -12,38 +15,11 @@ import Dashboard from "./components/admin/Dashboard";
 import Analytics from "./components/admin/Analytics";
 import Footer from "./components/admin/Footer";
 import Customers from "./components/admin/Customers";
-<<<<<<< HEAD
+
 import Users from "./components/admin/Users";
-=======
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import OTPVerificationPage from "./pages/OTPVerificationPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import "./App.css";
 
 
-function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-      <div className="w-full max-w-md p-8 rounded-2xl shadow-lg bg-gray-800">
-        <Router>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/otp-verification" element={<OTPVerificationPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-          </Routes>
-        </Router>
-      </div>
-    </div>
-  );
-}
 
->>>>>>> aee6af5c6de6d05f527f9e362f61022b49480cc0
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
