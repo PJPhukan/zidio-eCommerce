@@ -1,13 +1,14 @@
 // src/components/UserActions.jsx
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const UserActions = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   return (
     <div className="flex items-center space-x-1 sm:space-x-4">
       {/* Cart Icon */}
-      <a
-        href="/cart"
+      <Link
+        to="/cart"
         className="relative p-1 sm:p-2 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300"
       >
         <svg
@@ -27,14 +28,14 @@ const UserActions = () => {
         <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center shadow-md">
           3
         </span>
-      </a>
+      </Link>
 
       {/* Conditional Rendering */}
       {isSignedIn ? (
         <div className="flex items-center space-x-1 sm:space-x-2">
           {/* Profile Icon */}
-          <a
-            href="/profile"
+          <Link
+            to="/profile"
             className="text-gray-300 hover:text-blue-400 transition-all duration-300 p-1 sm:p-2 transform hover:scale-110 hover:-translate-y-1"
           >
             <svg
@@ -51,11 +52,11 @@ const UserActions = () => {
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               ></path>
             </svg>
-          </a>
+          </Link>
 
           {/* Logout Icon */}
-          <a
-            href="/logout"
+          <Link
+            to="/logout"
             className="text-gray-300 hover:text-blue-400 transition-all duration-300 p-1 sm:p-2 transform hover:scale-110 hover:-translate-y-1"
           >
             <svg
@@ -72,13 +73,13 @@ const UserActions = () => {
                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
               ></path>
             </svg>
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="flex items-center max-w-xs w-full " >
-          <a className="w-full px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base text-white bg-gray-800 hover:bg-blue-600 rounded-full text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" href="/sign-up" >
+          <Link  className="w-full px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base text-white bg-gray-800 hover:bg-blue-600 rounded-full text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" to="/signin" >
             Sign In
-          </a>
+          </Link>
         </div>
       )}
 
