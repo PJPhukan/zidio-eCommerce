@@ -6,20 +6,25 @@ import HeroSection from "./components/hero/HeroSection";
 import CategoryLinks from "./components/hero/CategoryLinks";
 import FeaturedProducts from "./components/hero/FeaturedProducts";
 import Sidebar from "./components/admin/Sidebar";
-import { RiMenuFold2Fill } from "react-icons/ri";
 import AdminTopbar from "./components/admin/Topbar";
 import Dashboard from "./components/admin/Dashboard";
 import Analytics from "./components/admin/Analytics";
 import Footer from "./components/admin/Footer";
 import Customers from "./components/admin/Customers";
+import Users from "./components/admin/Users";
+import LoginPage from "./components/authentication/LoginPage";
+import SignupPage from "./components/authentication/SignupPage";
+import ForgotPasswordPage from "./components/authentication/ForgetPassword";
+import OTPVerificationPage from "./components/authentication/OTPVerificationPage";
+import ResetPasswordPage from "./components/authentication/ResetPasswordPage";
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
 	// const userRole = localStorage.getItem("userRole");
 	// const isAdmin = userRole === "admin";
 	const [isOpen, setIsOpen] = useState(true);
-	const authToken = true;
-	const isAdmin = true;
+	const authToken = false;
+	const isAdmin = false;
 
 	const toggleSidebar = () => {
 		setIsOpen(!isOpen);
@@ -40,14 +45,7 @@ function App() {
 							<AdminTopbar toggleSidebar={toggleSidebar} />
 							<Routes>
 								<Route path="/" element={<Dashboard />} />
-								<Route
-									path="/admin/dashboard"
-									element={<Sidebar />}
-								/>
-								<Route
-									path="/admin/users"
-									element={<Sidebar />}
-								/>
+
 								<Route
 									path="/customers"
 									element={<Customers />}
@@ -56,12 +54,9 @@ function App() {
 									path="/analytics"
 									element={<Analytics />}
 								/>
-								<Route
-									path="/admin/logout"
-									element={<Sidebar />}
-								/>
+								<Route path="/users" element={<Users />} />
 							</Routes>
-							<Footer/>
+							<Footer />
 						</div>
 					</div>
 				) : (
@@ -78,7 +73,24 @@ function App() {
 									</>
 								}
 							/>
+
+							<Route path="/signin" element={<LoginPage />} />
+							<Route path="/signup" element={<SignupPage />} />
+							<Route
+								path="/forgot-password"
+								element={<ForgotPasswordPage />}
+							/>
+							<Route
+								path="/verify-otp"
+								element={<OTPVerificationPage />}
+							/>
+							<Route
+								path="/reset-password"
+								element={<ResetPasswordPage />}
+							/>
 						</Routes>
+						{/* <Route path="/products" element={<ProductListingPage />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} /> */}
 					</>
 				)}
 			</div>
