@@ -20,11 +20,8 @@ import SignupPage from "./components/authentication/SignupPage";
 import ForgotPasswordPage from "./components/authentication/ForgetPassword";
 import OTPVerificationPage from "./components/authentication/OTPVerificationPage";
 import ResetPasswordPage from "./components/authentication/ResetPasswordPage";
-
-import Users from "./components/admin/Users";
-
-
-
+import ProductListingPage from "./pages/ProductListingPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
@@ -96,9 +93,15 @@ function App() {
 								path="/reset-password"
 								element={<ResetPasswordPage />}
 							/>
+							<Route
+								path="/products"
+								element={<ProductListingPage />}
+							/>
+							<Route
+								path="/products/:id"
+								element={<ProductDetailPage />}
+							/>
 						</Routes>
-						{/* <Route path="/products" element={<ProductListingPage />} />
-          <Route path="/products/:id" element={<ProductDetailPage />} /> */}
 					</>
 				)}
 			</div>
