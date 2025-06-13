@@ -1,10 +1,13 @@
 // src/App.jsx
+
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/navbar/Navbar";
 import HeroSection from "./components/hero/HeroSection";
 import CategoryLinks from "./components/hero/CategoryLinks";
 import FeaturedProducts from "./components/hero/FeaturedProducts";
+
 import Sidebar from "./components/admin/Sidebar";
 import AdminTopbar from "./components/admin/Topbar";
 import Dashboard from "./components/admin/Dashboard";
@@ -17,6 +20,11 @@ import SignupPage from "./components/authentication/SignupPage";
 import ForgotPasswordPage from "./components/authentication/ForgetPassword";
 import OTPVerificationPage from "./components/authentication/OTPVerificationPage";
 import ResetPasswordPage from "./components/authentication/ResetPasswordPage";
+
+import Users from "./components/admin/Users";
+
+
+
 
 function App() {
 	// const authToken = localStorage.getItem("authToken");
