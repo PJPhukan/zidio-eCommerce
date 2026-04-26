@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
 	FaUser,
 	FaChartBar,
@@ -19,11 +19,9 @@ import {
 	MdHeadsetMic,
 	MdOutlinePrivacyTip,
 } from "react-icons/md";
-import { useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
-	const location = useLocation();
-
 	useEffect(() => {
 		const handleResize = () => {
 			if (window.innerWidth > 768) {
@@ -37,7 +35,7 @@ const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
 		handleResize();
 
 		return () => window.removeEventListener("resize", handleResize);
-	}, []);
+	}, [setIsOpen]);
 
 	const NavItem = [
 		{
@@ -170,20 +168,38 @@ const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
 						}`}
 					>
 						{item.pages.map((page, index) => {
-							const isActive = location.pathname === page.url;
+							const isExternal = page.url.startsWith("http");
 							return (
 								<li
 									key={index}
-									className={`flex items-center p-2 transition font-semibold cursor-pointer hover:text-blue-500 ${
-										isActive
-											? "text-blue-400"
-											: "text-white"
-									}`}
+									className="flex items-center p-2 transition font-semibold cursor-pointer"
 								>
-									{page.label ? (
+									{page.label && !isExternal ? (
+										<NavLink
+											to={page.url}
+											className={({ isActive }) =>
+												`flex items-center w-full hover:text-blue-500 ${
+													isActive
+														? "text-blue-400"
+														: "text-white"
+												}`
+											}
+										>
+											<page.icon className="text-xl" />
+											<span
+												className={`${
+													isOpen ? "ml-4" : "hidden"
+												} md:block`}
+											>
+												{page.label}
+											</span>
+										</NavLink>
+									) : page.label ? (
 										<a
 											href={page.url}
-											className="flex items-center w-full"
+											target="_blank"
+											rel="noopener noreferrer"
+											className="flex items-center w-full text-white hover:text-blue-500"
 										>
 											<page.icon className="text-xl" />
 											<span

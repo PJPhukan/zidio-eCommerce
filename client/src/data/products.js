@@ -1,3 +1,10 @@
+import marvelTshirtImage from "../assets/images/marvelT-shirt.jpg";
+import starryNightHoodieImage from "../assets/images/sNightHoodie.jpg";
+import batmanVNeckImage from "../assets/images/batmanV-neck.jpeg";
+import spidermanCrewNeckImage from "../assets/images/spidermanCrewNeck.avif";
+import supermanImage from "../assets/images/superman.jpg";
+import ironmanImage from "../assets/images/ironman.jpg";
+
 export const products = [
   {
     id: 1,
@@ -7,9 +14,9 @@ export const products = [
     stock: 10,
     rating: 4.5,
     images: [
-      "/src/assets/images/marvelT-shirt.jpg",
-      "/src/assets/images/marvelT-shirt.jpg",
-      "/src/assets/images/marvelT-shirt.jpg",
+      marvelTshirtImage,
+      marvelTshirtImage,
+      marvelTshirtImage,
     ],
     description:
       "A vibrant Marvel Avengers T-Shirt featuring your favorite superheroes. Made from premium cotton for ultimate comfort.",
@@ -30,9 +37,9 @@ export const products = [
     stock: 5,
     rating: 4.8,
     images: [
-      "/src/assets/images/sNightHoodie.jpg",
-      "/src/assets/images/sNightHoodie.jpg",
-      "/src/assets/images/sNightHoodie.jpg",
+      starryNightHoodieImage,
+      starryNightHoodieImage,
+      starryNightHoodieImage,
     ],
     description:
       "Cozy hoodie inspired by Van Gogh's Starry Night masterpiece. Perfect for chilly evenings.",
@@ -53,9 +60,9 @@ export const products = [
     stock: 0,
     rating: 4.2,
     images: [
-      "/src/assets/images/batmanV-neck.jpeg",
-      "/src/assets/images/batmanV-neck.jpeg",
-      "/src/assets/images/batmanV-neck.jpeg",
+      batmanVNeckImage,
+      batmanVNeckImage,
+      batmanVNeckImage,
     ],
     description:
       "Sleek V-Neck T-Shirt with Batman logo for DC fans. Lightweight and breathable.",
@@ -73,9 +80,9 @@ export const products = [
     stock: 8,
     rating: 4.6,
     images: [
-      "/src/assets/images/spidermanCrewNeck.avif",
-      "/src/assets/images/spidermanCrewNeck.avif",
-      "/src/assets/images/spidermanCrewNeck.avif",
+      spidermanCrewNeckImage,
+      spidermanCrewNeckImage,
+      spidermanCrewNeckImage,
     ],
     description:
       "Classic Spider-Man crew neck T-Shirt with bold design. Perfect for Marvel fans.",
@@ -96,9 +103,9 @@ export const products = [
     stock: 12,
     rating: 4.3,
     images: [
-      "/src/assets/images/superman.jpg",
-      "/src/assets/images/superman.jpg",
-      "/src/assets/images/superman.jpg",
+      supermanImage,
+      supermanImage,
+      supermanImage,
     ],
     description:
       "Oversized Superman T-Shirt for a relaxed, heroic look. Soft and durable fabric.",
@@ -116,9 +123,9 @@ export const products = [
     stock: 15,
     rating: 4,
     images: [
-      "/src/assets/images/ironman.jpg",
-      "/src/assets/images/ironman.jpg",
-      "/src/assets/images/ironman.jpg",
+      ironmanImage,
+      ironmanImage,
+      ironmanImage,
     ],
     description:
       "Sleeveless Iron Man T-Shirt, perfect for workouts. Breathable and stylish.",
@@ -132,4 +139,3 @@ export const products = [
     createdAt: "2025-01-30",
   },
 ];
-

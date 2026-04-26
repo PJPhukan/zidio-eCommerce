@@ -15,6 +15,7 @@ import Analytics from "./components/admin/Analytics";
 import Footer from "./components/admin/Footer";
 import Customers from "./components/admin/Customers";
 import Users from "./components/admin/Users";
+import RecentOrders from "./components/admin/RecentOrders";
 import LoginPage from "./components/authentication/LoginPage";
 import SignupPage from "./components/authentication/SignupPage";
 import ForgotPasswordPage from "./components/authentication/ForgetPassword";
@@ -57,6 +58,7 @@ function AppContent() {
 						<AdminTopbar toggleSidebar={toggleSidebar} />
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
+							<Route path="/orders" element={<RecentOrders />} />
 
 							<Route
 								path="/customers"
