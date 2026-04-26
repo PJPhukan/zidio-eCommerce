@@ -1,12 +1,12 @@
 // src/components/ProductDetailPage.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../context/CartContext";
 import { products as productCatalog } from "../data/products";
 
 const ProductDetailPage = () => {
-  const { addToCart, removeFromCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, isInCart, cartItems } = useCart();
   const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
@@ -61,6 +61,18 @@ const ProductDetailPage = () => {
       quantity,
     });
   };
+
+  useEffect(() => {
+    if (!product) return;
+    // Don't overwrite if user already selected a size
+    if (selectedSize) return;
+
+    // If product is in cart, select the size that was added (fall back to first size)
+    const cartEntry = cartItems.find((item) => item.id === product.id);
+    if (cartEntry) {
+      setSelectedSize(cartEntry.size || product.sizes?.[0] || "");
+    }
+  }, [product, cartItems, selectedSize]);
 
   if (!product) {
     return (
