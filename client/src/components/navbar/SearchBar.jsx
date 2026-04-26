@@ -3,7 +3,7 @@ import React from "react";
 
 const SearchBar = () => {
   return (
-    <div className="relative">
+    <div className="relative hidden md:block">
       <input
         type="text"
         placeholder="Search products..."

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { FaEye, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import { FaEye, FaEdit, FaTrash, FaSearch, FaUserCircle } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 const orders = [
 	{
@@ -80,6 +80,7 @@ const RecentOrders = () => {
 	const [openDropdownId, setOpenDropdownId] = useState(null);
 	const [sortKey, setSortKey] = useState("");
 	const [searchQuery, setSearchQuery] = useState("");
+	const [imageErrors, setImageErrors] = useState({});
 
 	const dropdownRef = useRef();
 
@@ -211,11 +212,21 @@ const RecentOrders = () => {
 								<td className="p-3">{order.category}</td>
 								<td className="p-3">{order.quantity}</td>
 								<td className="p-3 flex items-center gap-2">
-									<img
-										src={order.avatar}
-										alt={order.customer}
-										className="w-6 h-6 rounded-full"
-									/>
+									{order.avatar && !imageErrors[order.id] ? (
+										<img
+											src={order.avatar}
+											alt={order.customer}
+											className="w-6 h-6 rounded-full"
+											onError={() =>
+												setImageErrors((prev) => ({
+													...prev,
+													[order.id]: true,
+												}))
+											}
+										/>
+									) : (
+										<FaUserCircle className="w-6 h-6 text-gray-400" />
+									)}
 									{order.customer}
 								</td>
 								<td className="p-3">

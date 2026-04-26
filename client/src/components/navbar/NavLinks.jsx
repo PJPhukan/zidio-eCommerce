@@ -1,5 +1,6 @@
 // src/components/NavLinks.jsx
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const NavLinks = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,10 +14,11 @@ const NavLinks = () => {
 
   return (
     <>
-      <div className="md:hidden">
+      <div className="md:hidden flex items-center">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-gray-300 hover:text-blue-400 focus:outline-none transform hover:scale-110 transition-all duration-300"
+          className="inline-flex items-center justify-center w-9 h-9 text-gray-300 hover:text-blue-400 focus:outline-none rounded-md transition-all duration-300"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
         >
           <svg
             className="w-6 h-6"
@@ -40,14 +42,18 @@ const NavLinks = () => {
         } md:flex md:items-center md:space-x-6 absolute md:static top-16 left-0 w-full md:w-auto bg-gray-900 shadow-xl md:shadow-none p-4 md:p-0 transition-all duration-300`}
       >
         {links.map((link) => (
-          <a
+          <NavLink
             key={link.name}
-            href={link.href}
-            className="block md:inline-block text-gray-200 hover:text-blue-400 py-2 md:py-0 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
+            to={link.href}
+            className={({ isActive }) =>
+              `block md:inline-block py-2 md:py-0 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 ${
+                isActive ? "text-blue-400" : "text-gray-200 hover:text-blue-400"
+              }`
+            }
             onClick={() => setIsOpen(false)}
           >
             {link.name}
-          </a>
+          </NavLink>
         ))}
       </div>
     </>

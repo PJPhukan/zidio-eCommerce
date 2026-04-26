@@ -52,7 +52,7 @@ const SignupPage = () => {
 	];
 
 	return (
-		<section className="hero-3d-bg bg-gradient-to-r from-gray-900 via-gray-800 to-blue-900 text-white px-12 py-12 sm:py-20 relative overflow-hidden min-h-screen">
+		<section className="hero-3d-bg bg-gradient-to-r from-gray-900 via-gray-800 to-blue-900 text-white px-4 sm:px-8 py-12 sm:py-20 relative overflow-hidden min-h-screen">
 			<div className=" w-full sm:max-w-sm md:max-w-md mx-auto py-7 px-4 sm:px-6 lg:px-8 flex flex-col  relative z-10  bg-gray-800 text-white rounded-2xl ">
 				<h2 className="text-3xl font-bold mb-6 text-center">Sign Up</h2>
 				<form onSubmit={handleSignup} className="space-y-5">

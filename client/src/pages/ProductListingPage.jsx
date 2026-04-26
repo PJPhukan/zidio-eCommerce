@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Placeholder for local images (replace with your own assets)
-const placeholderImage = "/images/placeholder.jpg"; // Add a local placeholder image
+import { useCart } from "../context/CartContext";
+import { products as productsData } from "../data/products";
 
 const ProductListingPage = () => {
+  const { addToCart, removeProductFromCart, isInCart } = useCart();
+  const [searchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     tshirtType: [],
@@ -15,74 +16,25 @@ const ProductListingPage = () => {
   });
   const [sortOption, setSortOption] = useState("newest");
 
-  // Sample product data with a createdAt field for "newest" sorting
-  const products = [
-    {
-      id: 1,
-      name: "Marvel Avengers T-Shirt",
-      price: 499,
-      rating: 4.5,
-      image: "/src/assets/images/marvelT-shirt.jpg",
-      type: "Crew Neck",
-      size: ["S", "M", "L"],
-      createdAt: "2025-05-01",
-    },
-    {
-      id: 2,
-      name: "Starry Night Hoodie",
-      price: 999,
-      rating: 4.8,
-      image: "/src/assets/images/sNightHoodie.jpg",
-      type: "Hoodie",
-      size: ["M", "L", "XL"],
-      createdAt: "2025-04-15",
-    },
-    {
-      id: 3,
-      name: "DC Batman V-Neck",
-      price: 699,
-      rating: 4.2,
-      image: "/src/assets/images/batmanV-neck.jpeg",
-      type: "V-Neck",
-      size: ["S", "L", "XL"],
-      createdAt: "2025-03-10",
-    },
-    {
-      id: 4,
-      name: "Spider-Man Crew Neck",
-      price: 899,
-      rating: 4.6,
-      image: "/src/assets/images/spidermanCrewNeck.avif",
-      type: "Crew Neck",
-      size: ["S", "M", "XL"],
-      createdAt: "2025-05-20",
-    },
-    {
-      id: 5,
-      name: "Superman Oversized",
-      price: 1999,
-      rating: 4.3,
-      image: "/src/assets/images/superman.jpg",
-      type: "Oversized",
-      size: ["M", "L", "XL"],
-      createdAt: "2025-02-25",
-    },
-    {
-      id: 6,
-      name: "Sleeveless Iron Man",
-      price: 299,
-      rating: 4.0,
-      image: "/src/assets/images/ironman.jpg",
-      type: "Sleeveless",
-      size: ["S", "M", "L"],
-      createdAt: "2025-01-30",
-    },
-  ];
+  const categoryToType = {
+    oversized: "Oversized",
+    "crew-neck": "Crew Neck",
+    "v-neck": "V-Neck",
+    hoodies: "Hoodie",
+    sleeveless: "Sleeveless",
+  };
+  const selectedCategoryType = categoryToType[searchParams.get("category")] || "";
 
   // Optimize filtering with useMemo
   const filteredProducts = useMemo(() => {
-    let result = [...products];
+    let result = productsData.map((product) => ({
+      ...product,
+      image: product.images[0],
+      size: product.sizes,
+    }));
     result = result.filter((product) => {
+      const categoryMatch =
+        selectedCategoryType === "" || product.type === selectedCategoryType;
       const typeMatch =
         filters.tshirtType.length === 0 ||
         filters.tshirtType.includes(product.type);
@@ -94,7 +46,7 @@ const ProductListingPage = () => {
         filters.size.some((size) => product.size.includes(size));
       const ratingMatch =
         filters.rating === 0 || product.rating >= filters.rating;
-      return typeMatch && priceMatch && sizeMatch && ratingMatch;
+      return categoryMatch && typeMatch && priceMatch && sizeMatch && ratingMatch;
     });
 
     // Sorting logic with "newest" support
@@ -106,7 +58,7 @@ const ProductListingPage = () => {
         return new Date(b.createdAt) - new Date(a.createdAt);
       return 0;
     });
-  }, [filters, sortOption, products]);
+  }, [filters, sortOption, selectedCategoryType]);
 
   const tshirtTypes = [
     "Oversized",
@@ -132,8 +84,20 @@ const ProductListingPage = () => {
 
   // Handle Add to Cart (placeholder for actual implementation)
   const handleAddToCart = (product) => {
-    console.log(`Added ${product.name} to cart`);
-    // Integrate with a cart context or state management (e.g., Redux, Zustand)
+    if (isInCart(product.id)) {
+      removeProductFromCart(product.id);
+      return;
+    }
+
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      offPercent: product.offPercent || 0,
+      size: product.size?.[0] || "",
+      quantity: 1,
+    });
   };
 
   // Animation variants
@@ -180,7 +144,10 @@ const ProductListingPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Filters Sidebar (Left) */}
-          <motion.div className="lg:w-1/4" variants={childVariants}>
+          <motion.div
+            className="lg:w-1/4 md:sticky md:top-20 md:self-start md:z-40"
+            variants={childVariants}
+          >
             <div className="flex items-center justify-between mb-4 lg:mb-0">
               <h2 className="text-xl sm:text-2xl font-bold text-white">
                 Filters
@@ -217,7 +184,7 @@ const ProductListingPage = () => {
               {isFilterOpen && (
                 <motion.div
                   id="filter-sidebar"
-                  className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg"
+                  className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg md:max-h-[calc(100vh-6rem)] md:overflow-y-auto"
                   variants={filterVariants}
                   initial="hidden"
                   animate="visible"
@@ -228,6 +195,16 @@ const ProductListingPage = () => {
                     <h3 className="text-lg font-semibold text-white mb-2">
                       T-Shirt Type
                     </h3>
+                    <label className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox text-blue-600 focus:ring-blue-500"
+                        checked={filters.tshirtType.length === 0}
+                        onChange={() => handleFilterChange("tshirtType", [])}
+                        aria-label="Show all t-shirt types"
+                      />
+                      <span className="ml-2 text-gray-300">All</span>
+                    </label>
                     {tshirtTypes.map((type) => (
                       <label key={type} className="flex items-center mb-2">
                         <input
@@ -415,16 +392,21 @@ const ProductListingPage = () => {
                             </span>
                           </div>
                           <motion.button
+                            type="button"
                             onClick={(e) => {
                               e.preventDefault(); // Prevent Link navigation
                               handleAddToCart(product);
                             }}
-                            className="w-full px-4 py-2 text-sm sm:text-base bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                            className={`w-full px-4 py-2 text-sm sm:text-base text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
+                              isInCart(product.id)
+                                ? "bg-red-600 hover:bg-red-700"
+                                : "bg-blue-600 hover:bg-blue-700"
+                            }`}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             aria-label={`Add ${product.name} to cart`}
                           >
-                            Add to Cart
+                            {isInCart(product.id) ? "Remove from Cart" : "Add to Cart"}
                           </motion.button>
                         </div>
                       </Link>

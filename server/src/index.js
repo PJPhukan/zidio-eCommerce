@@ -10,7 +10,7 @@ MongoConnect()
   .then(() => {
     app.listen(port, () => {
       console.log(
-        `♦️♦️ Zidio E-Commerce web application running on  http://localhost:${port} ♦️♦️ `
+        `♦️♦️ Shop.com E-Commerce web application running on  http://localhost:${port} ♦️♦️ `
       );
     });
   })

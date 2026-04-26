@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
 				{
 					label: "Dashboard",
 					icon: AiFillProduct,
-					url: "/",
+					url: "/?admin=true",
 				},
 			],
 		},
@@ -56,22 +56,22 @@ const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
 				{
 					label: "Orders",
 					icon: TbShoppingBag,
-					url: "/orders",
+					url: "/orders?admin=true",
 				},
 				{
 					label: "Products",
 					icon: FaBoxOpen,
-					url: "/products",
+					url: "/products?admin=true",
 				},
 				{
 					label: "Analytics",
 					icon: FaChartBar,
-					url: "/analytics",
+					url: "/analytics?admin=true",
 				},
 				{
 					label: "Customers",
 					icon: FaUser,
-					url: "/customers",
+					url: "/customers?admin=true",
 				},
 			],
 		},
@@ -81,12 +81,12 @@ const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
 				{
 					label: "Settings",
 					icon: MdSettings,
-					url: "/settings",
+					url: "/settings?admin=true",
 				},
 				{
 					label: "Users",
 					icon: FaUsersCog,
-					url: "/users",
+					url: "/users?admin=true",
 				},
 			],
 		},
@@ -96,17 +96,17 @@ const Sidebar = ({ isOpen, setIsOpen, toggleSidebar }) => {
 				{
 					label: "Help Center",
 					icon: MdHelpOutline,
-					url: "/help",
+					url: "/help?admin=true",
 				},
 				{
 					label: "FAQs",
 					icon: MdHeadsetMic,
-					url: "/faqs",
+					url: "/faqs?admin=true",
 				},
 				{
 					label: "Privacy Policy",
 					icon: MdOutlinePrivacyTip,
-					url: "/privacy",
+					url: "/privacy?admin=true",
 				},
 			],
 		},

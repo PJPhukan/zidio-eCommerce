@@ -1,14 +1,18 @@
 // src/components/UserActions.jsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 
 const UserActions = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const { cartCount } = useCart();
+  const location = useLocation();
   return (
     <div className="flex items-center space-x-1 sm:space-x-4">
       {/* Cart Icon */}
       <Link
         to="/cart"
+        state={{ backgroundLocation: location }}
         className="relative p-1 sm:p-2 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300"
       >
         <svg
@@ -25,9 +29,11 @@ const UserActions = () => {
             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
           ></path>
         </svg>
-        <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center shadow-md">
-          3
-        </span>
+        {cartCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full min-w-4 h-4 px-1 flex items-center justify-center shadow-md">
+            {cartCount}
+          </span>
+        )}
       </Link>
 
       {/* Conditional Rendering */}
@@ -76,8 +82,11 @@ const UserActions = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex items-center max-w-xs w-full " >
-          <Link  className="w-full px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base text-white bg-gray-800 hover:bg-blue-600 rounded-full text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" to="/signin" >
+        <div className="flex items-center">
+          <Link
+            className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base text-white bg-gray-800 hover:bg-blue-600 rounded-full text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 whitespace-nowrap"
+            to="/signin"
+          >
             Sign In
           </Link>
         </div>

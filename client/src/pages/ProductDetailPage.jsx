@@ -2,171 +2,18 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "../context/CartContext";
+import { products as productCatalog } from "../data/products";
 
 const ProductDetailPage = () => {
+  const { addToCart, removeFromCart, removeProductFromCart, isInCart } = useCart();
   const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  // Sample product data
-  const products = [
-    {
-      id: 1,
-      name: "Marvel Avengers T-Shirt",
-      price: 499,
-      stock: 10,
-      rating: 4.5,
-      images: [
-        "/src/assets/images/marvelT-shirt.jpg",
-        "/src/assets/images/marvelT-shirt.jpg",
-        "/src/assets/images/marvelT-shirt.jpg",
-      ],
-      description:
-        "A vibrant Marvel Avengers T-Shirt featuring your favorite superheroes. Made from premium cotton for ultimate comfort.",
-      theme: "Marvel",
-      type: "Crew Neck",
-      sizes: ["S", "M", "L", "XL"],
-      reviews: [
-        {
-          user: "Tony S.",
-          rating: 5,
-          comment: "Awesome design, fits perfectly!",
-        },
-        {
-          user: "Peter P.",
-          rating: 4,
-          comment: "Great shirt, but color fades slightly.",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Starry Night Hoodie",
-      price: 999,
-      stock: 5,
-      rating: 4.8,
-      images: [
-        "/src/assets/images/sNightHoodie.jpg",
-        "/src/assets/images/sNightHoodie.jpg",
-        "/src/assets/images/sNightHoodie.jpg",
-      ],
-      description:
-        "Cozy hoodie inspired by Van Gogh’s Starry Night masterpiece. Perfect for chilly evenings.",
-      theme: "Starry Night",
-      type: "Hoodie",
-      sizes: ["M", "L", "XL"],
-      reviews: [
-        { user: "Emma W.", rating: 5, comment: "Super comfy and stylish!" },
-        {
-          user: "Liam N.",
-          rating: 4.5,
-          comment: "Love the print, great quality.",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "DC Batman V-Neck",
-      price: 699,
-      stock: 0,
-      rating: 4.2,
-      images: [
-        "/src/assets/images/batmanV-neck.jpeg",
-        "/src/assets/images/batmanV-neck.jpeg",
-        "/src/assets/images/batmanV-neck.jpeg",
-      ],
-      description:
-        "Sleek V-Neck T-Shirt with Batman logo for DC fans. Lightweight and breathable.",
-      theme: "DC Comics",
-      type: "V-Neck",
-      sizes: ["S", "L", "XL"],
-      reviews: [
-        {
-          user: "Bruce W.",
-          rating: 4,
-          comment: "Cool design, but sizing runs small.",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Spider-Man Crew Neck",
-      price: 899,
-      stock: 8,
-      rating: 4.6,
-      images: [
-        "/src/assets/images/spidermanCrewNeck.avif",
-        "/src/assets/images/spidermanCrewNeck.avif",
-        "/src/assets/images/spidermanCrewNeck.avif",
-      ],
-      description:
-        "Classic Spider-Man crew neck T-Shirt with bold design. Perfect for Marvel fans.",
-      theme: "Marvel",
-      type: "Crew Neck",
-      sizes: ["S", "M", "XL"],
-      reviews: [
-        { user: "MJ W.", rating: 5, comment: "My favorite shirt, great fit!" },
-        {
-          user: "Ned L.",
-          rating: 4,
-          comment: "Nice, but stitching could be better.",
-        },
-      ],
-    },
-    {
-      id: 5,
-      name: "Superman Oversized",
-      price: 1999,
-      stock: 12,
-      rating: 4.3,
-      images: [
-        "/src/assets/images/superman.jpg",
-        "/src/assets/images/superman.jpg",
-        "/src/assets/images/superman.jpg",
-      ],
-      description:
-        "Oversized Superman T-Shirt for a relaxed, heroic look. Soft and durable fabric.",
-      theme: "DC Comics",
-      type: "Oversized",
-      sizes: ["M", "L", "XL"],
-      reviews: [
-        {
-          user: "Clark K.",
-          rating: 4.5,
-          comment: "Really comfortable, love the fit.",
-        },
-      ],
-    },
-    {
-      id: 6,
-      name: "Sleeveless Iron Man",
-      price: 299,
-      stock: 15,
-      rating: 4.0,
-      images: [
-        "/src/assets/images/ironman.jpg",
-        "/src/assets/images/ironman.jpg",
-        "/src/assets/images/ironman.jpg",
-      ],
-      description:
-        "Sleeveless Iron Man T-Shirt, perfect for workouts. Breathable and stylish.",
-      theme: "Marvel",
-      type: "Sleeveless",
-      sizes: ["S", "M", "L"],
-      reviews: [
-        {
-          user: "Pepper P.",
-          rating: 4,
-          comment: "Great for gym, nice design.",
-        },
-        { user: "Rhodey J.", rating: 3.5, comment: "Good but a bit tight." },
-      ],
-    },
-  ];
-
-  const product = products.find((p) => p.id === Number(id));
-  const relatedProducts = products
+  const product = productCatalog.find((p) => p.id === Number(id));
+  const relatedProducts = productCatalog
     .filter(
       (p) =>
         p.id !== Number(id) &&
@@ -194,6 +41,25 @@ const ProductDetailPage = () => {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.3 } },
     exit: { opacity: 0, transition: { duration: 0.3 } },
+  };
+
+  const handleAddToCart = () => {
+    if (!product || !selectedSize || product.stock === 0) return;
+
+    if (isInCart(product.id, selectedSize)) {
+      removeFromCart(product.id, selectedSize);
+      return;
+    }
+
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      offPercent: product.offPercent || 0,
+      size: selectedSize,
+      quantity,
+    });
   };
 
   if (!product) {
@@ -353,54 +219,72 @@ const ProductDetailPage = () => {
 
             {/* Size Selector */}
             <motion.div className="mb-6" variants={childVariants}>
-              <label
-                htmlFor="size"
-                className="text-white font-semibold mb-2 block"
-              >
-                Select Size
-              </label>
-              <motion.select
-                id="size"
-                value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value)}
-                className="w-full sm:w-48 p-2 rounded bg-gray-700 text-white focus:ring-2 focus:ring-blue-500"
-                disabled={product.stock === 0}
-                aria-label="Select size"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                data-animate
-              >
-                <option value="">Choose Size</option>
-                {product.sizes.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </motion.select>
+              <p className="text-white font-semibold mb-3">Select Size</p>
+              <div className="flex flex-wrap gap-3" role="radiogroup" aria-label="Select size">
+                {product.sizes.map((size) => {
+                  const isSelected = selectedSize === size;
+                  return (
+                    <motion.button
+                      key={size}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      onClick={() => setSelectedSize(size)}
+                      disabled={product.stock === 0}
+                      className={`w-12 h-12 rounded-full border-2 text-sm font-semibold transition-all duration-200 ${
+                        isSelected
+                          ? "border-blue-500 bg-blue-600 text-white shadow-lg"
+                          : "border-gray-500 bg-gray-800 text-gray-200 hover:border-blue-400"
+                      } disabled:opacity-50 disabled:cursor-not-allowed`}
+                      whileHover={product.stock > 0 ? { scale: 1.08 } : {}}
+                      whileTap={product.stock > 0 ? { scale: 0.94 } : {}}
+                      data-animate
+                    >
+                      {size}
+                    </motion.button>
+                  );
+                })}
+              </div>
             </motion.div>
 
             {/* Quantity Selector */}
             <motion.div className="mb-6" variants={childVariants}>
-              <label
-                htmlFor="quantity"
-                className="text-white font-semibold mb-2 block"
-              >
-                Quantity
-              </label>
-              <motion.input
-                id="quantity"
-                type="number"
-                min="1"
-                max={product.stock}
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                className="w-20 p-2 rounded bg-gray-700 text-white focus:ring-2 focus:ring-blue-500"
-                disabled={product.stock === 0}
-                aria-label="Select quantity"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                data-animate
-              />
+              <p className="text-white font-semibold mb-2 block">Quantity</p>
+              <div className="flex items-center gap-3">
+                <motion.button
+                  type="button"
+                  onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                  disabled={product.stock === 0 || quantity <= 1}
+                  className="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Decrease quantity"
+                  whileHover={product.stock > 0 && quantity > 1 ? { scale: 1.05 } : {}}
+                  whileTap={product.stock > 0 && quantity > 1 ? { scale: 0.95 } : {}}
+                  data-animate
+                >
+                  -
+                </motion.button>
+                <span className="min-w-8 text-center text-white font-semibold">
+                  {quantity}
+                </span>
+                <motion.button
+                  type="button"
+                  onClick={() =>
+                    setQuantity((prev) => Math.min(product.stock, prev + 1))
+                  }
+                  disabled={product.stock === 0 || quantity >= product.stock}
+                  className="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Increase quantity"
+                  whileHover={
+                    product.stock > 0 && quantity < product.stock ? { scale: 1.05 } : {}
+                  }
+                  whileTap={
+                    product.stock > 0 && quantity < product.stock ? { scale: 0.95 } : {}
+                  }
+                  data-animate
+                >
+                  +
+                </motion.button>
+              </div>
             </motion.div>
 
             {/* Buttons */}
@@ -409,14 +293,22 @@ const ProductDetailPage = () => {
               variants={childVariants}
             >
               <motion.button
-                className="w-full sm:w-auto px-6 py-3 text-sm sm:text-base bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed"
+                type="button"
+                onClick={handleAddToCart}
+                className={`w-full sm:w-auto px-6 py-3 text-sm sm:text-base text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed ${
+                  selectedSize && isInCart(product.id, selectedSize)
+                    ? "bg-red-600 hover:bg-red-700"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
                 disabled={product.stock === 0 || !selectedSize}
                 aria-label="Add to cart"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 data-animate
               >
-                Add to Cart
+                {selectedSize && isInCart(product.id, selectedSize)
+                  ? "Remove from Cart"
+                  : "Add to Cart"}
               </motion.button>
               <motion.button
                 className="w-full sm:w-auto px-6 py-3 text-sm sm:text-base bg-gray-700 hover:bg-gray-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed"
@@ -545,12 +437,33 @@ const ProductDetailPage = () => {
                         ))}
                       </div>
                       <motion.button
-                        className="w-full px-4 py-2 text-sm sm:text-base bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (isInCart(related.id)) {
+                            removeProductFromCart(related.id);
+                          } else {
+                            addToCart({
+                              id: related.id,
+                              name: related.name,
+                              price: related.price,
+                              image: related.images[0],
+                              offPercent: related.offPercent || 0,
+                              size: related.sizes[0] || "",
+                              quantity: 1,
+                            });
+                          }
+                        }}
+                        className={`w-full px-4 py-2 text-sm sm:text-base text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
+                          isInCart(related.id)
+                            ? "bg-red-600 hover:bg-red-700"
+                            : "bg-blue-600 hover:bg-blue-700"
+                        }`}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         data-animate
                       >
-                        Add to Cart
+                        {isInCart(related.id) ? "Remove from Cart" : "Add to Cart"}
                       </motion.button>
                     </div>
                   </Link>
@@ -565,3 +478,4 @@ const ProductDetailPage = () => {
 };
 
 export default ProductDetailPage;
+
