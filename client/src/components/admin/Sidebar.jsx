@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import { TbShoppingBag } from "react-icons/tb";
 import { AiFillProduct } from "react-icons/ai";
-import { RiMenuUnfold2Fill, RiMenuFold2Fill } from "react-icons/ri";
+import { RiMenuUnfold2Fill } from "react-icons/ri";
 import {
 	MdSettings,
 	MdHelpOutline,

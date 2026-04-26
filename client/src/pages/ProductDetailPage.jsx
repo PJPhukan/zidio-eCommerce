@@ -6,7 +6,7 @@ import { useCart } from "../context/CartContext";
 import { products as productCatalog } from "../data/products";
 
 const ProductDetailPage = () => {
-  const { addToCart, removeFromCart, removeProductFromCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, isInCart } = useCart();
   const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
@@ -440,8 +440,9 @@ const ProductDetailPage = () => {
                         type="button"
                         onClick={(e) => {
                           e.preventDefault();
-                          if (isInCart(related.id)) {
-                            removeProductFromCart(related.id);
+                          const quickSize = related.sizes?.[0] || "";
+                          if (isInCart(related.id, quickSize)) {
+                            removeFromCart(related.id, quickSize);
                           } else {
                             addToCart({
                               id: related.id,
@@ -449,13 +450,13 @@ const ProductDetailPage = () => {
                               price: related.price,
                               image: related.images[0],
                               offPercent: related.offPercent || 0,
-                              size: related.sizes[0] || "",
+                              size: quickSize,
                               quantity: 1,
                             });
                           }
                         }}
                         className={`w-full px-4 py-2 text-sm sm:text-base text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
-                          isInCart(related.id)
+                          isInCart(related.id, related.sizes?.[0] || "")
                             ? "bg-red-600 hover:bg-red-700"
                             : "bg-blue-600 hover:bg-blue-700"
                         }`}
@@ -463,7 +464,9 @@ const ProductDetailPage = () => {
                         whileTap={{ scale: 0.95 }}
                         data-animate
                       >
-                        {isInCart(related.id) ? "Remove from Cart" : "Add to Cart"}
+                        {isInCart(related.id, related.sizes?.[0] || "")
+                          ? "Remove from Cart"
+                          : "Add to Cart"}
                       </motion.button>
                     </div>
                   </Link>

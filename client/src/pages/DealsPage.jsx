@@ -3,7 +3,7 @@ import { useCart } from "../context/CartContext";
 import { products } from "../data/products";
 
 const DealsPage = () => {
-  const { addToCart, removeProductFromCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, isInCart } = useCart();
 
   const dealProducts = [...products]
     .filter((product) => (product.offPercent || 0) > 0)
@@ -52,8 +52,9 @@ const DealsPage = () => {
                     <button
                       type="button"
                       onClick={() => {
-                        if (isInCart(product.id)) {
-                          removeProductFromCart(product.id);
+                        const quickSize = product.sizes?.[0] || "";
+                        if (isInCart(product.id, quickSize)) {
+                          removeFromCart(product.id, quickSize);
                         } else {
                           addToCart({
                             id: product.id,
@@ -61,18 +62,20 @@ const DealsPage = () => {
                             price: product.price,
                             image: product.images[0],
                             offPercent: product.offPercent || 0,
-                            size: product.sizes[0] || "",
+                            size: quickSize,
                             quantity: 1,
                           });
                         }
                       }}
                       className={`w-full mt-4 px-4 py-2 rounded-full font-medium transition-all duration-300 ${
-                        isInCart(product.id)
+                        isInCart(product.id, product.sizes?.[0] || "")
                           ? "bg-red-600 hover:bg-red-700"
                           : "bg-blue-600 hover:bg-blue-700"
                       }`}
                     >
-                      {isInCart(product.id) ? "Remove from Cart" : "Add to Cart"}
+                      {isInCart(product.id, product.sizes?.[0] || "")
+                        ? "Remove from Cart"
+                        : "Add to Cart"}
                     </button>
                   </div>
                 </div>
@@ -86,4 +89,3 @@ const DealsPage = () => {
 };
 
 export default DealsPage;
-

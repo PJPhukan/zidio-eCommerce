@@ -5,7 +5,7 @@ import { useCart } from "../../context/CartContext";
 import { products } from "../../data/products";
 
 const FeaturedProducts = () => {
-  const { addToCart, removeProductFromCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, isInCart } = useCart();
   const featuredProducts = products.slice(0, 4).map((product) => ({
     ...product,
     image: product.images[0],
@@ -65,8 +65,9 @@ const FeaturedProducts = () => {
                     type="button"
                     onClick={(e) => {
                       e.preventDefault();
-                      if (isInCart(product.id)) {
-                        removeProductFromCart(product.id);
+                      const quickSize = product.sizes?.[0] || "";
+                      if (isInCart(product.id, quickSize)) {
+                        removeFromCart(product.id, quickSize);
                       } else {
                         addToCart({
                           id: product.id,
@@ -74,18 +75,20 @@ const FeaturedProducts = () => {
                           price: product.price,
                           image: product.image,
                           offPercent: product.offPercent || 0,
-                          size: "",
+                          size: quickSize,
                           quantity: 1,
                         });
                       }
                     }}
                     className={`w-full px-4 py-2 text-sm sm:text-base text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ${
-                      isInCart(product.id)
+                      isInCart(product.id, product.sizes?.[0] || "")
                         ? "bg-red-600 hover:bg-red-700"
                         : "bg-blue-600 hover:bg-blue-700"
                     }`}
                   >
-                    {isInCart(product.id) ? "Remove from Cart" : "Add to Cart"}
+                    {isInCart(product.id, product.sizes?.[0] || "")
+                      ? "Remove from Cart"
+                      : "Add to Cart"}
                   </button>
                 </div>
               </Link>

@@ -5,7 +5,7 @@ import { useCart } from "../context/CartContext";
 import { products as productsData } from "../data/products";
 
 const ProductListingPage = () => {
-  const { addToCart, removeProductFromCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, isInCart } = useCart();
   const [searchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
@@ -84,8 +84,9 @@ const ProductListingPage = () => {
 
   // Handle Add to Cart (placeholder for actual implementation)
   const handleAddToCart = (product) => {
-    if (isInCart(product.id)) {
-      removeProductFromCart(product.id);
+    const quickSize = product.size?.[0] || "";
+    if (isInCart(product.id, quickSize)) {
+      removeFromCart(product.id, quickSize);
       return;
     }
 
@@ -95,7 +96,7 @@ const ProductListingPage = () => {
       price: product.price,
       image: product.image,
       offPercent: product.offPercent || 0,
-      size: product.size?.[0] || "",
+      size: quickSize,
       quantity: 1,
     });
   };
@@ -398,7 +399,7 @@ const ProductListingPage = () => {
                               handleAddToCart(product);
                             }}
                             className={`w-full px-4 py-2 text-sm sm:text-base text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${
-                              isInCart(product.id)
+                              isInCart(product.id, product.size?.[0] || "")
                                 ? "bg-red-600 hover:bg-red-700"
                                 : "bg-blue-600 hover:bg-blue-700"
                             }`}
@@ -406,7 +407,9 @@ const ProductListingPage = () => {
                             whileTap={{ scale: 0.95 }}
                             aria-label={`Add ${product.name} to cart`}
                           >
-                            {isInCart(product.id) ? "Remove from Cart" : "Add to Cart"}
+                            {isInCart(product.id, product.size?.[0] || "")
+                              ? "Remove from Cart"
+                              : "Add to Cart"}
                           </motion.button>
                         </div>
                       </Link>

@@ -56,21 +56,24 @@ function AppContent() {
 					{/* Main Content */}
 					<div className="flex-1 p-4  md:ml-0">
 						<AdminTopbar toggleSidebar={toggleSidebar} />
-						<Routes>
-							<Route path="/" element={<Dashboard />} />
-							<Route path="/orders" element={<RecentOrders />} />
+						<div className="mt-4">
+							<Routes>
+								<Route path="/" element={<Dashboard />} />
+								<Route path="/orders" element={<RecentOrders />} />
 
-							<Route
-								path="/customers"
-								element={<Customers />}
-							/>
-							<Route
-								path="/analytics"
-								element={<Analytics />}
-							/>
-							<Route path="/users" element={<Users />} />
-						</Routes>
-						<Footer />
+								<Route
+									path="/customers"
+									element={<Customers />}
+								/>
+								<Route
+									path="/analytics"
+									element={<Analytics />}
+								/>
+								<Route path="/users" element={<Users />} />
+								<Route path="*" element={<Dashboard />} />
+							</Routes>
+						</div>
+						{/* <Footer /> */}
 					</div>
 				</div>
 			) : (
